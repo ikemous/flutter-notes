@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as devtools show log;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mynotes/utlities/show_error_dialogue.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -26,14 +25,15 @@ class _LoginViewState extends State<LoginView> {
       switch (e.code) {
         case "user-not-found":
         case "wrong-password":
-          devtools.log("Invalid Username/Password");
+        case "invalid-email":
+          showErrorDialogue(context, "Username/Password Invalid");
           break;
         default:
-          devtools.log(e.code);
+          showErrorDialogue(context, "Unexpected Authentication Error");
           break;
       }
     } catch (e) {
-      devtools.log(e.runtimeType.toString());
+      showErrorDialogue(context, "Unknown Error");
     }
   }
 
