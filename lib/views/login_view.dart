@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mynotes/common/routes.dart';
 import 'package:mynotes/utlities/show_error_dialogue.dart';
 
 class LoginView extends StatefulWidget {
@@ -20,20 +21,21 @@ class _LoginViewState extends State<LoginView> {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushNamedAndRemoveUntil(context, "/notes", (route) => false);
+
+      Navigator.pushNamedAndRemoveUntil(context, NOTES_ROUTE, (route) => false);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "user-not-found":
         case "wrong-password":
         case "invalid-email":
-          showErrorDialogue(context, "Username/Password Invalid");
+          await showErrorDialogue(context, "Username/Password Invalid");
           break;
         default:
-          showErrorDialogue(context, "Unexpected Authentication Error");
+          await showErrorDialogue(context, "Unexpected Authentication Error");
           break;
       }
     } catch (e) {
-      showErrorDialogue(context, "Unknown Error");
+      await showErrorDialogue(context, "Unknown Error");
     }
   }
 
