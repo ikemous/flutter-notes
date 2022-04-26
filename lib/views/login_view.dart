@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mynotes/common/routes.dart';
+import 'package:mynotes/services/auth/auth_exceptions.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 import 'package:mynotes/utlities/show_error_dialogue.dart';
 
 class LoginView extends StatefulWidget {
@@ -19,10 +20,9 @@ class _LoginViewState extends State<LoginView> {
     final password = _password.text;
 
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      final user = FirebaseAuth.instance.currentUser;
-      if (user?.emailVerified ?? false) {
+      await AuthService.firebase().login(email: email, password: password);
+      final user = AuthService.firebase().currentUser;
+      if (user?.isEmailVerified ?? false) {
         Navigator.pushNamedAndRemoveUntil(
           context,
           NOTES_ROUTE,
@@ -32,19 +32,10 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pushNamedAndRemoveUntil(
             context, VERIFY_EMAIL_ROUTE, (route) => false);
       }
-    } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case "user-not-found":
-        case "wrong-password":
-        case "invalid-email":
-          await showErrorDialogue(context, "Username/Password Invalid");
-          break;
-        default:
-          await showErrorDialogue(context, "Unexpected Authentication Error");
-          break;
-      }
-    } catch (e) {
-      await showErrorDialogue(context, "Unknown Error");
+    } on InvalidEmailAuthException {
+      await showErrorDialogue(context, "Username/Password Invalid");
+    } on GenericAuthException {
+      await showErrorDialogue(context, "Authentication Error");
     }
   }
 

@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/common/routes.dart';
+import 'package:mynotes/services/auth/auth_service.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
@@ -11,12 +11,11 @@ class VerifyEmailView extends StatefulWidget {
 
 class _VerifyEmailViewState extends State<VerifyEmailView> {
   void sendEmailVerification() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    await currentUser?.sendEmailVerification();
+    AuthService.firebase().sendEmailVerification();
   }
 
   void handleRestart() async {
-    await FirebaseAuth.instance.signOut();
+    AuthService.firebase().logOut();
     Navigator.pushNamedAndRemoveUntil(
       context,
       REGISTER_ROUTE,
