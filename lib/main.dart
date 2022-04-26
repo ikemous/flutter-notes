@@ -42,5 +42,6 @@ void main() async {
       NOTES_ROUTE: (context) => const NotesView(),
       VERIFY_EMAIL_ROUTE: (context) => const VerifyEmailView(),
     },
+    debugShowCheckedModeBanner: false,
   ));
 }
