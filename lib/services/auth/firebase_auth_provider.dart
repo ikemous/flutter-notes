@@ -85,7 +85,6 @@ class FirebaseAuthProvider implements AuthProvider {
     } catch (_) {
       throw GenericAuthException();
     }
-    throw UnimplementedError();
   }
 
   @override

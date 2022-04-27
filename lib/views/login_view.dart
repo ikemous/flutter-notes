@@ -32,7 +32,7 @@ class _LoginViewState extends State<LoginView> {
         Navigator.pushNamedAndRemoveUntil(
             context, VERIFY_EMAIL_ROUTE, (route) => false);
       }
-    } on InvalidEmailAuthException {
+    } on InvalidLoginAuthException {
       await showErrorDialogue(context, "Username/Password Invalid");
     } on GenericAuthException {
       await showErrorDialogue(context, "Authentication Error");

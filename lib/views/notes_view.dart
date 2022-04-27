@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mynotes/common/app_bar_actions.dart';
-import 'dart:developer' as devtools show log;
 
 import 'package:mynotes/services/auth/auth_service.dart';
 
